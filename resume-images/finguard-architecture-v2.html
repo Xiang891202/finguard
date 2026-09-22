@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>FinGuard 系統架構圖</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0f172a;
+    display: flex; justify-content: center; align-items: center;
+    min-height: 100vh;
+    font-family: -apple-system, "Segoe UI", "Microsoft JhengHei", sans-serif;
+  }
+  .card {
+    width: 704px; height: 396px;
+    background: linear-gradient(160deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 16px;
+    padding: 18px 22px;
+    position: relative; overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  }
+  .card::before {
+    content: ''; position: absolute;
+    top: -80px; right: -80px; width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  /* 標題 */
+  .header {
+    position: relative; z-index: 1;
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .brand { display: flex; align-items: center; gap: 8px; }
+  .brand-icon {
+    width: 30px; height: 30px;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+  }
+  .brand-name { font-size: 16px; font-weight: 800; color: #0f172a; line-height: 1.1; }
+  .brand-sub { font-size: 9px; color: #64748b; font-weight: 500; }
+  .title-badge {
+    padding: 3px 10px;
+    background: linear-gradient(135deg, #dbeafe, #ede9fe);
+    border-radius: 100px;
+    font-size: 9px; color: #1e40af; font-weight: 700;
+  }
+
+  /* 語言標籤 */
+  .lang-bar {
+    position: relative; z-index: 1;
+    display: flex; gap: 6px;
+    margin-bottom: 8px;
+  }
+  .lang-chip {
+    display: flex; align-items: center; gap: 4px;
+    padding: 3px 9px;
+    border-radius: 100px;
+    font-size: 9px; font-weight: 800;
+    border: 1.5px solid;
+  }
+  .lang-chip .dot { width: 5px; height: 5px; border-radius: 50%; }
+  .lc-vue { background: #ecfdf5; border-color: #6ee7b7; color: #047857; }
+  .lc-vue .dot { background: #10b981; }
+  .lc-node { background: #fef3c7; border-color: #fbbf24; color: #92400e; }
+  .lc-node .dot { background: #f59e0b; }
+  .lc-python { background: #eff6ff; border-color: #93c5fd; color: #1d4ed8; }
+  .lc-python .dot { background: #3b82f6; }
+  .lc-java { background: #fef2f2; border-color: #fca5a5; color: #991b1b; }
+  .lc-java .dot { background: #dc2626; }
+
+  /* 架構層（7 層，橫向排列） */
+  .arch-grid {
+    position: relative; z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+  .layer {
+    background: white;
+    border-radius: 6px;
+    padding: 6px 4px;
+    text-align: center;
+    border-top: 3px solid;
+    position: relative;
+    min-height: 76px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 2px;
+    box-shadow: 0 1px 3px rgba(15,23,42,0.05);
+  }
+  .layer-icon { font-size: 14px; line-height: 1; }
+  .layer-name {
+    font-size: 9px; font-weight: 800; color: #0f172a;
+    line-height: 1.1;
+  }
+  .layer-lang {
+    font-size: 7px; font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 100px;
+    background: #f1f5f9; color: #475569;
+    margin-top: 1px;
+  }
+  .layer-tags {
+    display: flex; flex-direction: column; gap: 2px;
+    margin-top: 2px;
+    width: 100%;
+  }
+  .layer-tag {
+    font-size: 7px; font-weight: 600; color: #64748b;
+    line-height: 1.2;
+  }
+
+  .l1 { border-top-color: #3b82f6; }
+  .l1 .layer-icon { color: #3b82f6; }
+  .l2 { border-top-color: #8b5cf6; }
+  .l3 { border-top-color: #f59e0b; }
+  .l4 { border-top-color: #10b981; }
+  .l5 { border-top-color: #dc2626; }
+  .l6 { border-top-color: #ec4899; }
+  .l7 { border-top-color: #64748b; }
+
+  /* 箭頭 */
+  .arrow-row {
+    position: relative; z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 6px;
+    text-align: center;
+    color: #cbd5e1;
+    font-size: 8px;
+  }
+
+  /* 引擎版本管理層（v1.5） */
+  .engine-layer {
+    position: relative; z-index: 1;
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 10px;
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border-radius: 8px;
+    border: 1.5px solid #fbbf24;
+    margin-bottom: 6px;
+  }
+  .engine-layer-icon { font-size: 14px; }
+  .engine-layer-title {
+    font-size: 9px; font-weight: 800; color: #92400e;
+    white-space: nowrap;
+  }
+  .engine-chips { display: flex; gap: 3px; flex-wrap: wrap; flex: 1; }
+  .engine-chip {
+    padding: 1px 6px;
+    background: white;
+    border-radius: 100px;
+    font-size: 7px; font-weight: 700; color: #92400e;
+  }
+
+  /* 底部數據 */
+  .stats {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+    padding-top: 6px;
+    border-top: 1px dashed #e2e8f0;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-size: 14px; font-weight: 800;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+  }
+  .stat-label { font-size: 7px; color: #64748b; font-weight: 700; margin-top: 1px; }
+</style>
+</head>
+<body>
+  <div class="card">
+
+    <!-- 標題 -->
+    <div class="header">
+      <div class="brand">
+        <div class="brand-icon">🛡️</div>
+        <div>
+          <div class="brand-name">FinGuard 系統架構</div>
+          <div class="brand-sub">個人 / 家庭財務安全儀表板 · 七層架構</div>
+        </div>
+      </div>
+      <div class="title-badge">獨立設計</div>
+    </div>
+
+    <!-- 語言標籤 -->
+    <div class="lang-bar">
+      <div class="lang-chip lc-vue"><span class="dot"></span>Vue 3 · 前端</div>
+      <div class="lang-chip lc-node"><span class="dot"></span>Node.js · 閘道</div>
+      <div class="lang-chip lc-python"><span class="dot"></span>Python · 業務</div>
+      <div class="lang-chip lc-java"><span class="dot"></span>Java · 金流</div>
+    </div>
+
+    <!-- 7 層架構（橫向） -->
+    <div class="arch-grid">
+      <div class="layer l1">
+        <div class="layer-icon">👤</div>
+        <div class="layer-name">用戶層</div>
+        <div class="layer-lang">Web</div>
+        <div class="layer-tags">
+          <div class="layer-tag">OTP 登入</div>
+          <div class="layer-tag">Email 報告</div>
+        </div>
+      </div>
+      <div class="layer l2">
+        <div class="layer-icon">🎨</div>
+        <div class="layer-name">前端層</div>
+        <div class="layer-lang">Vue 3</div>
+        <div class="layer-tags">
+          <div class="layer-tag">Tailwind</div>
+          <div class="layer-tag">Pinia</div>
+        </div>
+      </div>
+      <div class="layer l3">
+        <div class="layer-icon">🚪</div>
+        <div class="layer-name">閘道層</div>
+        <div class="layer-lang">Node.js</div>
+        <div class="layer-tags">
+          <div class="layer-tag">JWT</div>
+          <div class="layer-tag">Rate Limit</div>
+        </div>
+      </div>
+      <div class="layer l4">
+        <div class="layer-icon">⚙️</div>
+        <div class="layer-name">業務層</div>
+        <div class="layer-lang">FastAPI</div>
+        <div class="layer-tags">
+          <div class="layer-tag">財務/保險</div>
+          <div class="layer-tag">健康檔案</div>
+        </div>
+      </div>
+      <div class="layer l5">
+        <div class="layer-icon">💰</div>
+        <div class="layer-name">金流層</div>
+        <div class="layer-lang">Java</div>
+        <div class="layer-tags">
+          <div class="layer-tag">Stripe</div>
+          <div class="layer-tag">訂閱</div>
+        </div>
+      </div>
+      <div class="layer l6">
+        <div class="layer-icon">🧠</div>
+        <div class="layer-name">AI 層</div>
+        <div class="layer-lang">NumPy</div>
+        <div class="layer-tags">
+          <div class="layer-tag">蒙地卡羅</div>
+          <div class="layer-tag">LLM</div>
+        </div>
+      </div>
+      <div class="layer l7">
+        <div class="layer-icon">🗄️</div>
+        <div class="layer-name">資料層</div>
+        <div class="layer-lang">PostgreSQL</div>
+        <div class="layer-tags">
+          <div class="layer-tag">Redis</div>
+          <div class="layer-tag">Supabase</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 箭頭 -->
+    <div class="arrow-row">
+      <div>▼</div>
+      <div>▼</div>
+      <div>▼</div>
+      <div>▼</div>
+      <div>▼</div>
+      <div>▼</div>
+      <div>▼</div>
+    </div>
+
+    <!-- 引擎版本管理層（v1.5 新增） -->
+    <div class="engine-layer">
+      <div class="engine-layer-icon">⚙️</div>
+      <div class="engine-layer-title">引擎版本管理 (v1.5)</div>
+      <div class="engine-chips">
+        <span class="engine-chip">🕷️ 爬蟲</span>
+        <span class="engine-chip">🧹 正規化</span>
+        <span class="engine-chip">✅ 驗證</span>
+        <span class="engine-chip">🎯 比對</span>
+        <span class="engine-chip">🎲 蒙地卡羅</span>
+        <span class="engine-chip">🧠 LLM</span>
+      </div>
+    </div>
+
+    <!-- 底部數據 -->
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num">7+1</div>
+        <div class="stat-label">架構層級</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">4</div>
+        <div class="stat-label">程式語言</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">5</div>
+        <div class="stat-label">爬蟲來源</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">36</div>
+        <div class="stat-label">資料表</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">106</div>
+        <div class="stat-label">API 端點</div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

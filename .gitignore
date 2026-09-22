@@ -1,0 +1,78 @@
+# === 環境變數 ===
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+# === Node.js ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+dist/
+.vite/
+.DS_Store
+
+# === Java ===
+target/
+*.class
+*.jar
+*.war
+*.ear
+.mvn/
+gradle/
+build/
+
+# === IDE ===
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+
+# === 系統 ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === 日誌 ===
+logs/
+*.log
+
+# === 資料庫 ===
+*.sqlite
+*.sqlite3
+*.db
+
+# === 備份 ===
+*.bak
+*.tmp
+*.backup
+
+# === 敏感資料 ===
+secrets/
+credentials/
+*.pem
+*.key
+
+# === Docker ===
+postgres_data/
+redis_data/
