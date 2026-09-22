@@ -1,0 +1,12 @@
+# 尚未部署的 URL
+https://finguard-mvp.onrender.com/*
+https://api.finguard.com/*
+
+# 範例 URL（文件中的示意）
+https://openapi.twse.com.tw/*
+file:///home/runner/work/finguard/finguard/*
+
+# 常見會擋爬蟲的網站
+https://www.finfo.com.tw/*
+https://www.twse.com.tw/*
+https://www.cbc.gov.tw/*
