@@ -1,0 +1,14 @@
+# 預留檔案，P0 完成後填入實際內容
+FROM node:20-alpine
+
+WORKDIR /app
+
+# P0 時填入：
+# COPY package*.json .
+# RUN npm ci
+
+# COPY . .
+
+EXPOSE 5173
+
+CMD ["echo", "Frontend Dockerfile 尚未實作"]

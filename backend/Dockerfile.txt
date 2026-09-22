@@ -1,0 +1,14 @@
+# 預留檔案，P0 完成後填入實際內容
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# P0 時填入：
+# COPY requirements.txt .
+# RUN pip install --no-cache-dir -r requirements.txt
+
+# COPY . .
+
+EXPOSE 8000
+
+CMD ["echo", "Backend Dockerfile 尚未實作"]
