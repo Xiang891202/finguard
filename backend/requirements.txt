@@ -1,0 +1,45 @@
+# === 核心框架 ===
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+pydantic-settings==2.7.0
+
+# === 資料庫 ===
+sqlalchemy==2.0.36
+alembic==1.14.0
+psycopg2-binary==2.9.10
+asyncpg==0.30.0
+
+# === Redis / Queue ===
+redis==5.2.1
+celery==5.4.0
+
+# === 認證 / 加密 ===
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+bcrypt==4.2.1
+cryptography==44.0.0
+python-multipart==0.0.20
+
+# === 資料處理 ===
+numpy==2.2.1
+pandas==2.2.3
+
+# === HTTP / 爬蟲 ===
+httpx==0.28.1
+requests==2.32.3
+beautifulsoup4==4.12.3
+
+# === Email ===
+jinja2==3.1.5
+aiosmtplib==3.0.2
+
+# === 測試 ===
+pytest==8.3.4
+pytest-asyncio==0.25.0
+pytest-cov==6.0.0
+
+# === 工具 ===
+python-dotenv==1.0.1
+ruff==0.8.4
+mypy==1.14.0
