@@ -322,3 +322,35 @@ def test_full_auth_flow():
 前端	LoginView, AdminLoginView, HealthProfileView	✅
 前端	HealthProfileForm, FamilyHistoryForm, GeneticTestForm	✅
 測試	test_auth.py, test_health_profile.py, test_auth_flow.py	✅
+
+
+
+## 8. 實作 vs 規劃的差異（2026-09-24 完成）
+
+| 規劃書 | 實際實作 | 原因 |
+|---|---|---|
+| `services/auth_service.py` | `services/otp_service.py` + `services/token_service.py` | SRP 拆分，職責分離 |
+| `api/v1/health.py`（改） | `api/v1/health_profile.py` + `api/v1/genetic.py` | 原 `health.py` 為 P0 健康檢查端點 |
+| `services/health/health_profile_service.py` | `services/health_profile_service.py` | 簡化目錄（暫無 `health/` 子目錄） |
+| `services/health/genetic_service.py` | `services/genetic_service.py` | 同上 |
+| `tests/unit/test_auth.py` | `test_auth_otp.py` + `test_auth_token.py` + `test_admin_auth.py` | 依功能拆分 |
+| `tests/integration/test_auth_flow.py` | ✅ 建立 | 涵蓋 3 條 Critical Path |
+
+## 9. 驗收結果（2026-09-24）
+
+| 項目 | 結果 |
+|---|---|
+| 後端單元 + 整合測試 | 55 passed |
+| 後端測試覆蓋率 | 84% |
+| 前端 E2E（Playwright） | 6 passed |
+| 前端單元測試（Vitest） | 4 passed |
+| 資料庫 migration | `b93f21a4aec3` (head) |
+
+## 10. 已知延後項目
+
+| 項目 | 延後至 | 原因 |
+|---|---|---|
+| 舊用戶跳過健康檔案 | Phase 9-10 | 需先有 Dashboard |
+| BaseInput/BaseButton/BaseCard/BaseSelect 抽取 | Phase 2 前 | 重構性質，獨立 commit |
+| Emil Kowalski 風格 polish | Phase 11 | UI 定型後統一處理 |
+| 響應式 3 裝置截圖 | Phase 1 收尾 | 本節補做 |
